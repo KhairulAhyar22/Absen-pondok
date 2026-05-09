@@ -13,6 +13,23 @@ return new class extends Migration
     {
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('pondok_id')
+                ->constrained('pondoks')
+                ->cascadeOnDelete();
+
+            $table->foreignId('kategori_id')
+                ->constrained('kategoris')
+                ->cascadeOnDelete();
+
+            $table->string('nama_sesi');
+
+            $table->tinyInteger('hari'); // 1-7
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
+
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
         });
     }

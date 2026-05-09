@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Peserta extends Model
 {
     protected $table = 'pesertas';
+    protected $fillable = [
+        'pondok_id',
+        'nama',
+        'rfid',
+        'deskripsi',
+        'is_active',
+    ];
 
     public function pondok()
     {
@@ -21,11 +28,28 @@ class Peserta extends Model
             'peserta_id',
             'kategori_id'
         )->withPivot('prioritas', 'is_active')
-         ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function absensis()
     {
         return $this->hasMany(Absensi::class, 'peserta_id');
+    }
+    protected static function booted()
+    {
+        static::saving(function ($peserta) {
+
+            if (! $peserta->exists) {
+                return;
+            }
+
+            $kategoris = $peserta->kategoris()->get();
+
+            $prioritas = $kategoris->pluck('pivot.prioritas')->toArray();
+
+            if (count($prioritas) !== count(array_unique($prioritas))) {
+                throw new \Exception('Prioritas kategori tidak boleh sama dalam satu peserta.');
+            }
+        });
     }
 }

@@ -39,4 +39,17 @@ class Pondok extends Model
     {
         return $this->hasMany(Absensi::class, 'pondok_id');
     }
+    protected static function booted(): void
+{
+    static::creating(function ($pondok) {
+
+        $pondok->kode = 'PDK-' . str_pad(
+            static::count() + 1,
+            3,
+            '0',
+            STR_PAD_LEFT
+        );
+
+    });
+}
 }

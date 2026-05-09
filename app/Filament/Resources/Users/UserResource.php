@@ -20,12 +20,15 @@ use Filament\Tables;
 use Filament\Actions;
 use UnitEnum;
 use Filament\Schemas;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
+    protected static string | UnitEnum | null $navigationGroup = 'User';
     protected static ?int $navigationSort = 7;
 
     public static function form(Schema $schema): Schema
@@ -39,7 +42,7 @@ class UserResource extends Resource
                     ->schema([
                         Components\TextInput::make('name')->required()->maxLength(255)->label('Nama Admin'),
                         Components\TextInput::make('email')->email()->required()->unique(ignoreRecord: true),
-                        Components\Select::make('pondok_id')->relationship('pondok', 'nama')->searchable()->preload(),
+                        Components\Select::make('pondok_id')->relationship('pondok', 'nama'),
                         Components\Select::make('peran')
                             ->options([
                                 'super_admin' => 'Super Admin',
@@ -107,5 +110,10 @@ class UserResource extends Resource
             'create' => CreateUser::route('/create'),
             'edit' => EditUser::route('/{record}/edit'),
         ];
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('id', '!=', Auth::id());
     }
 }

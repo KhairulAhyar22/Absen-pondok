@@ -8,6 +8,12 @@ class Kategori extends Model
 {
     protected $table = 'kategoris';
 
+    protected $fillable = [
+        'pondok_id',
+        'nama',
+        'deskripsi',
+        'is_active',
+    ];
     public function pondok()
     {
         return $this->belongsTo(Pondok::class, 'pondok_id');

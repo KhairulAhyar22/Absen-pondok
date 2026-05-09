@@ -25,26 +25,22 @@ class PondokResource extends Resource
     protected static ?string $model = Pondok::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentChartBar;
-    // Tambahan
     protected static ?string $navigationLabel = 'Pondok';
     protected static ?string $modelLabel = 'Pondok';
     protected static ?string $pluralModelLabel = 'Data Pondok';
-    // protected static ?string $recordTitleAttribute = 'nama';
-    
-    // protected static string | UnitEnum | null $navigationGroup = 'Pondok';
-    protected static ?int $navigationSort = 1;
+    protected static string | UnitEnum | null $navigationGroup = 'Master Data';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
-        // return PondokForm::configure($schema);
         return $schema
             ->schema([
                 Schemas\Components\Section::make('Data Pondok')
                     ->schema([
                         Components\TextInput::make('nama')->required()->maxLength(255),
-                        Components\TextInput::make('kode')->required()->unique(ignoreRecord: true)->maxLength(50),
-                        Components\Textarea::make('alamat')->rows(3),
+                        // Components\TextInput::make('kode')->required()->unique(ignoreRecord: true)->maxLength(50),
                         Components\TextInput::make('telepon')->tel()->maxLength(20),
+                        Components\Textarea::make('alamat')->rows(3),
                         Components\Toggle::make('is_active')->label('Aktif')->default(true),
                     ])->columns(2)->columnSpanFull()
             ]);

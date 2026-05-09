@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('pondok_id')
+                ->constrained('pondoks')
+                ->cascadeOnDelete();
+
+            $table->string('nama');
+            $table->text('deskripsi')->nullable();
+
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
         });
     }

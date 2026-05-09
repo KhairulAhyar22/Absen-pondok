@@ -16,11 +16,4 @@ class EditUser extends EditRecord
             DeleteAction::make(),
         ];
     }
-    protected function getFormActions(): array
-    {
-        return [
-            $this->getSaveFormAction(),
-            $this->getCancelFormAction()->label('Back'),
-        ];
-    }
 }

@@ -14,6 +14,15 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
+// 
+use Filament\Forms\Components;
+use Filament\Tables;
+use Filament\Actions;
+use UnitEnum;
+use Filament\Schemas;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+
 class JadwalResource extends Resource
 {
     protected static ?string $model = Jadwal::class;
@@ -21,7 +30,8 @@ class JadwalResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'nama_sesi';
-    protected static ?int $navigationSort = 5;
+    protected static string | UnitEnum | null $navigationGroup = 'Absensi';
+    protected static ?int $navigationSort = 6;
     public static function form(Schema $schema): Schema
     {
         return JadwalForm::configure($schema);

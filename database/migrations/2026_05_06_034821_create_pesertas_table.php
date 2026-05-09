@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('pesertas', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('pondok_id')
+                ->constrained('pondoks')
+                ->cascadeOnDelete();
+
+            $table->string('rfid')->unique();
+            $table->string('nama');
+            $table->text('deskripsi')->nullable();
+
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
         });
     }

@@ -5,31 +5,25 @@ namespace App\Filament\Resources\Pesertas;
 use App\Filament\Resources\Pesertas\Pages\CreatePeserta;
 use App\Filament\Resources\Pesertas\Pages\EditPeserta;
 use App\Filament\Resources\Pesertas\Pages\ListPesertas;
-use App\Filament\Resources\Pesertas\Schemas\PesertaForm;
-use App\Filament\Resources\Pesertas\Tables\PesertasTable;
 use App\Models\Peserta;
 use BackedEnum;
+use Filament\Actions;
+use Filament\Forms\Components;
 use Filament\Resources\Resource;
+use Filament\Schemas;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
-// 
-use Filament\Forms\Components;
 use Filament\Tables;
-use Filament\Actions;
-use UnitEnum;
-use Filament\Schemas;
-use Filament\Schemas\Components\Tabs\Tab;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Table;
 
 class PesertaResource extends Resource
 {
     protected static ?string $model = Peserta::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
     protected static ?string $recordTitleAttribute = 'nama';
-    protected static string | UnitEnum | null $navigationGroup = 'Master Data';
+    protected static string | \UnitEnum | null $navigationGroup = 'Master Data';
     protected static ?int $navigationSort = 4;
     public static function form(Schema $schema): Schema
     {
@@ -40,8 +34,6 @@ class PesertaResource extends Resource
                         Components\Select::make('pondok_id')
                             ->relationship('pondok', 'nama')->searchable()
                             ->preload()->required(),
-                        // Components\Select::make('kategoris')->relationship('kategoris', 'nama')
-                        //     ->multiple()->preload()->searchable(),
                         Components\TextInput::make('nama')->required()->maxLength(255),
                         Components\TextInput::make('rfid')->required()->unique(ignoreRecord: true)->maxLength(100),
                         Components\Select::make('jenis_kelamin')
@@ -72,7 +64,8 @@ class PesertaResource extends Resource
                     ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('pondok.nama')
                     ->label('Pondok')->sortable(),
-                Tables\Columns\BadgeColumn::make('jenis_kelamin')
+                Tables\Columns\TextColumn::make('jenis_kelamin')
+                    ->badge()
                     ->colors([
                         'primary' => 'L',
                         'danger' => 'P',
@@ -83,8 +76,6 @@ class PesertaResource extends Resource
                 Tables\Columns\TextColumn::make('kategoris.nama')
                     ->label('Kategori')
                     ->badge()
-                    ->separator(',')
-                    ->wrap()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('d M Y')->sortable()->label('Dibuat')
                     ->toggleable(isToggledHiddenByDefault: true),

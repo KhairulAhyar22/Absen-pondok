@@ -2,11 +2,7 @@
 
 namespace App\Filament\Resources\Users;
 
-use App\Filament\Resources\Users\Pages\CreateUser;
-use App\Filament\Resources\Users\Pages\EditUser;
-use App\Filament\Resources\Users\Pages\ListUsers;
-use App\Filament\Resources\Users\Schemas\UserForm;
-use App\Filament\Resources\Users\Tables\UsersTable;
+use App\Filament\Resources\Users\Pages;
 use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -18,7 +14,6 @@ use Filament\Tables\Table;
 use Filament\Forms\Components;
 use Filament\Tables;
 use Filament\Actions;
-use UnitEnum;
 use Filament\Schemas;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +23,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
-    protected static string | UnitEnum | null $navigationGroup = 'User';
+    protected static string | \UnitEnum | null $navigationGroup = 'User';
     protected static ?int $navigationSort = 7;
 
     public static function form(Schema $schema): Schema
@@ -86,7 +81,7 @@ class UserResource extends Resource
             ])
             ->recordActions([
                 Actions\EditAction::make(),
-                // Actions\ViewAction::make(),
+                Actions\ViewAction::make(),
             ])
             ->toolbarActions([
                 Actions\BulkActionGroup::make([
@@ -106,9 +101,10 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListUsers::route('/'),
-            'create' => CreateUser::route('/create'),
-            'edit' => EditUser::route('/{record}/edit'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'view' => Pages\ViewUser::route('/{record}'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
     public static function getEloquentQuery(): Builder

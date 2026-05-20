@@ -8,6 +8,15 @@ class Jadwal extends Model
 {
     protected $table = 'jadwals';
 
+    protected $fillable = [
+        'pondok_id',
+        'kategori_id',
+        'hari',
+        'nama_sesi',
+        'jam_mulai',
+        'jam_selesai',
+        'is_active',
+    ];
     public function pondok()
     {
         return $this->belongsTo(Pondok::class, 'pondok_id');
